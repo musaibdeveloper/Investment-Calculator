@@ -1,42 +1,36 @@
-import React, { useState } from "react"
 import Header from "./components/Header.jsx"
-import UserInput from "./components/UserInput.jsx"
-import Results from "./components/Results.jsx"
+import UserInput from './components/UserInput.jsx'
+import Results from './components/Results.jsx'
+import { useState } from "react"
 
 function App() {
-
   const [userInput, setUserInput] = useState({
-    initialInvestments: 1000,
-    annualInvestments: 1200,
+    initialInvestment: 10000,
+    annualInvestment: 1200,
     expectedReturn: 6,
     duration: 10
+  });
 
-  })
+  const isInputValid = userInput.duration >= 1;
 
-  const InputIsValid = userInput.duration >= 1;
-
-  function HandleChange(InputIdentifier, newValue) {
-
-    setUserInput(preUserInput => {
+  function handleChange(inputIdentifier, newValue) {
+    setUserInput(prevUserInput => {
       return {
-        ...preUserInput, [InputIdentifier]: +newValue,
-      };
-    });
-
+        ...prevUserInput,
+        [inputIdentifier]: +newValue
+      }
+    })
   }
-
   return (
-    <div>
-      <Header></Header>
-      <UserInput userInput={userInput} onChange={HandleChange}></UserInput>
-      {!InputIsValid && <p className="center">Please enter duration number greater than 0</p>}
-      {InputIsValid && < Results input={userInput} />}
-
-    </div>
-
-  );
-
-
+    <>
+      <Header />
+      <UserInput onChange={handleChange} userInput={userInput} />
+      {!isInputValid && (
+        <p className="center">Please enter a duration greater than zero.</p>
+      )}
+      {isInputValid && <Results input={userInput} />}
+    </>
+  )
 }
 
 export default App
